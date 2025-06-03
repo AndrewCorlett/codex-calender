@@ -1,0 +1,9 @@
+{
+  "name": "Errolian Calendar",
+  "short_name": "Calendar",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "description": "Errolian Club Calendar",
+  "icons": []
+}
