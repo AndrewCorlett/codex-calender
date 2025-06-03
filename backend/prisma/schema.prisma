@@ -1,0 +1,54 @@
+ datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+ }
+ generator client {
+  provider = "prisma-client-js"
+ }
+ model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  roles        Role[]
+  tags         EventTag[]
+  PushSubscription PushSubscription[]
+ }
+ enum Role {
+  TO
+  LO
+  CO
+  AO
+  CMDR
+  ADMIN
+ }
+ model Event {
+  id            String   @id @default(uuid())
+  title         String
+  description   String?
+  startDateTime DateTime
+  endDateTime   DateTime
+  allDay        Boolean  @default(false)
+  calendarColor String
+  type          String
+  details       Json?
+  createdById   String
+  createdBy     User     @relation(fields: [createdById], references: [id])
+  tags          EventTag[]
+ }
+ model EventTag {
+  id             String @id @default(uuid())
+  event   Event   @relation(fields: [eventId], references: [id])
+  eventId String
+  user    User    @relation(fields: [userId], references: [id])
+  userId  String
+  availability   Boolean @default(false)
+  paymentStatus  String  @default("Not Paid")
+  bookingStatus  Boolean @default(false)
+ }
+ model PushSubscription {
+  id String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  subscriptionJson Json
+ }
